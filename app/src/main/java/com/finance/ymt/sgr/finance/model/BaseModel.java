@@ -12,6 +12,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 /**
@@ -33,13 +34,15 @@ public class BaseModel implements MvpModel {
     }
 
     public String getServerUrl(){
-        return "http://104.233.252.50/";
+        return "http://scauymt.com/sell/";
     }
 
     public <T> T buildService(Class<T> service){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getServerUrl())
+
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
         return retrofit.create(service);
     }
