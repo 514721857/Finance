@@ -212,7 +212,7 @@ public class OrderActivity extends BaseMvpActivity<OrderView,OrderPresenter> imp
                 if(position==0){
                     status=0;//待付款
                 }else if(position==1){
-                    status=1;//已付款
+                    status=2;//已付款
                 }else if(position==2){
                     status=4;
                 }else{
@@ -349,11 +349,12 @@ public class OrderActivity extends BaseMvpActivity<OrderView,OrderPresenter> imp
 
                         OrderBean temp1=  (OrderBean) adapter.getData().get(position);
                         if(temp1.getStatus()==0){
-                            temp1.setStatus(1);
+                            temp1.setStatus(2);
+                            getPresenter().UpdateOrder(temp1,position);
                         }else{
                             Toast.makeText(OrderActivity.this,"不可修改",Toast.LENGTH_LONG).show();
                         }
-                        getPresenter().UpdateOrder(temp1,position);
+
                         myDialog.dismiss();
                     }
                 });
