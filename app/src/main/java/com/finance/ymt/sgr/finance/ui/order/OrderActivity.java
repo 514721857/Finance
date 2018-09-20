@@ -340,7 +340,7 @@ public class OrderActivity extends BaseMvpActivity<OrderView,OrderPresenter> imp
                 break;
             case R.id.order_list_zt:
 
-                final MyDialog myDialog = new MyDialog(OrderActivity.this, "是否执行该操作?");
+                final MyDialog myDialog = new MyDialog(OrderActivity.this, "是否确认收款?");
                 myDialog.show();
                 myDialog.positive.setOnClickListener(new View.OnClickListener() {
 
@@ -381,6 +381,35 @@ public class OrderActivity extends BaseMvpActivity<OrderView,OrderPresenter> imp
 
 
                 break;
+
+            case R.id.order_list_qx://取消订单
+                final MyDialog qxDialog = new MyDialog(OrderActivity.this, "是否取消订单?");
+                qxDialog.show();
+                qxDialog.positive.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+
+                            OrderBean temp1=  (OrderBean) adapter.getData().get(position);
+                            temp1.setStatus(-1);
+                            getPresenter().UpdateOrder(temp1,position);
+
+
+                        qxDialog.dismiss();
+                    }
+                });
+                qxDialog.negative.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        // TODO Auto-generated method stub
+                        qxDialog.dismiss();
+                    }
+
+                });
+
+                break;
+
 
         }
     }

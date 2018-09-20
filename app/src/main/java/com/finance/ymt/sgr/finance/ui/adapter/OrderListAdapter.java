@@ -58,6 +58,7 @@ public class OrderListAdapter extends BaseQuickAdapter<OrderBean,BaseViewHolder>
 
         baseViewHolder.addOnClickListener(R.id.order_btn_phone);
         baseViewHolder.addOnClickListener(R.id.order_list_zt);
+        baseViewHolder.addOnClickListener(R.id.order_list_qx);
        /* new DateTime(new Date()).toDateTime(DateTimeZone.UTC).toDateTimeString("yyyy年MM月dd日 hh时mm分ss秒");
         DateTime.ParseExact("2013-11-17T11:59:22+08:00","yyyy-MM-ddTHH:mm:ss+08:00",null)*/
 
