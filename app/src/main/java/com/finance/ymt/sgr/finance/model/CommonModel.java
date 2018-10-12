@@ -65,12 +65,16 @@ public class CommonModel extends BaseModel {
      *
      * @param onLceHttpResultListener
      */
-    public void getOrderList(int  status,int page,String address, final HttpUtils.OnHttpResultListener onLceHttpResultListener) {
+    public void getOrderList(int  status,int page,String address,String phone, final HttpUtils.OnHttpResultListener onLceHttpResultListener) {
        RequestOrder order=new RequestOrder();
         order.setPageSize(10);
         order.setCurrPage(page);
         order.setStatus(status);
-        if(address!=null&&!order.equals("")){
+        if(phone!=null&&!phone.equals("")){
+            order.setPhone(phone);
+        }
+
+        if(address!=null&&!address.equals("")){
             order.setAddress(address);
         }
 //        order.setStatus(status);

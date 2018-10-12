@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -62,6 +63,9 @@ public class OrderActivity extends BaseMvpActivity<OrderView,OrderPresenter> imp
     @BindView(R.id.dropDownMenu)
     DropDownMenu mDropDownMenu;
 
+    @BindView(R.id.edit_phone)
+    EditText edit_phone;
+
 
     private String headers[] = {"地址", "待付款"};
     private List<View> popupViews = new ArrayList<>();
@@ -83,7 +87,7 @@ public class OrderActivity extends BaseMvpActivity<OrderView,OrderPresenter> imp
     protected int setLayoutId() {
         return R.layout.activity_main;
     }
-    @OnClick({R.id.result,R.id.top_view_right_text})
+    @OnClick({R.id.result,R.id.top_view_right_text,R.id.top_view_left})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.result:
@@ -114,13 +118,18 @@ public class OrderActivity extends BaseMvpActivity<OrderView,OrderPresenter> imp
                     }
                 });
                 break;
-                case R.id.top_view_right_text:
-                    pref = this.getSharedPreferences(AppCon.USER_KEY,MODE_PRIVATE);
-                    editor = pref.edit();
-                    editor.putString(AppCon.SCCESS_TOKEN_KEY,"");
-                    editor.commit();
-                    StartActivityUtil.skipAnotherActivity(this, LoginActivity.class);
+                case R.id.top_view_left:
+                    getSearch();
                     break;
+
+            case R.id.top_view_right_text:
+                pref = this.getSharedPreferences(AppCon.USER_KEY,MODE_PRIVATE);
+                editor = pref.edit();
+                editor.putString(AppCon.SCCESS_TOKEN_KEY,"");
+                editor.commit();
+                StartActivityUtil.skipAnotherActivity(this, LoginActivity.class);
+                break;
+
 
         }
     }
@@ -261,13 +270,19 @@ public class OrderActivity extends BaseMvpActivity<OrderView,OrderPresenter> imp
 
 
     private void loadMore() {
-        getPresenter().getOrderList(status,mNextRequestPage,address);
+        getPresenter().getOrderList(status,mNextRequestPage,address,"");
     }
 
     private void refresh() {
         mNextRequestPage = 0;
         mAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
-       getPresenter().getOrderList(status,mNextRequestPage,address);
+       getPresenter().getOrderList(status,mNextRequestPage,address,"");
+    }
+
+    private void getSearch(){
+        mNextRequestPage = 0;
+        mAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
+        getPresenter().getOrderList(status,mNextRequestPage,"",edit_phone.getText().toString());
     }
 
 
@@ -309,6 +324,8 @@ public class OrderActivity extends BaseMvpActivity<OrderView,OrderPresenter> imp
 
     @Override
     public void showResult(List<OrderBean> result) {
+
+
         if(mNextRequestPage==0){
             setData(true,result);
             mAdapter.setEnableLoadMore(true);

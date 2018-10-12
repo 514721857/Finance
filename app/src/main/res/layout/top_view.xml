@@ -5,10 +5,10 @@
     android:layout_height="60dp">
 
         <TextView
-            android:visibility="gone"
+
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
-            android:text="客服"
+            android:text="搜索"
             android:id="@+id/top_view_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,5 +39,6 @@
             android:textSize="20dp"
             android:text="注销"
            />
+
 
     </FrameLayout>

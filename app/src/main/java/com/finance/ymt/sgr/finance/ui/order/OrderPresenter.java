@@ -29,8 +29,8 @@ public class OrderPresenter extends BasePresenter<OrderView> {
         this.contexts=context;
         this.commonModel = new CommonModel(context);
     }
-    public void getOrderList(int status,int page,String address){
-        commonModel.getOrderList(status, page,address, new HttpUtils.OnHttpResultListener() {
+    public void getOrderList(int status,int page,String address,String phone){
+        commonModel.getOrderList(status, page,address, phone,new HttpUtils.OnHttpResultListener() {
             @Override
             public void onResult(Object result) {
                Result<OrderRespons> temp=(Result<OrderRespons>)result;
