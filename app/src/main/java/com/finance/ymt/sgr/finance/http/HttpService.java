@@ -5,6 +5,7 @@ package com.finance.ymt.sgr.finance.http;
 
 import com.finance.ymt.sgr.finance.model.OrderRespons;
 import com.finance.ymt.sgr.finance.model.Result;
+import com.finance.ymt.sgr.finance.model.User;
 import com.finance.ymt.sgr.finance.model.oneArea;
 
 import java.util.List;
@@ -40,7 +41,7 @@ public interface HttpService {
      */
     @Headers({"Content-type:application/json;charset=UTF-8"})
     @POST("seller/login")
-    Observable<Result<String>> getLogin(@Body RequestBody info);
+    Observable<Result<User>> getLogin(@Body RequestBody info);
 
 
     /**

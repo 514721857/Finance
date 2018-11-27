@@ -2,6 +2,7 @@ package com.finance.ymt.sgr.finance.ui.order;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 
 import com.finance.ymt.sgr.finance.config.BasePresenter;
@@ -11,8 +12,13 @@ import com.finance.ymt.sgr.finance.model.OrderBean;
 import com.finance.ymt.sgr.finance.model.OrderRespons;
 import com.finance.ymt.sgr.finance.model.Result;
 import com.finance.ymt.sgr.finance.model.oneArea;
+import com.finance.ymt.sgr.finance.ui.order.OrderView;
 
+import java.io.IOException;
 import java.util.List;
+
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 
 /**
@@ -29,13 +35,16 @@ public class OrderPresenter extends BasePresenter<OrderView> {
         this.contexts=context;
         this.commonModel = new CommonModel(context);
     }
-    public void getOrderList(int status,int page,String address,String phone){
-        commonModel.getOrderList(status, page,address, phone,new HttpUtils.OnHttpResultListener() {
+    public void getOrderList(int status,int page,int type){
+
+
+        commonModel.getOrderList(status, page,type, new HttpUtils.OnHttpResultListener() {
             @Override
             public void onResult(Object result) {
-               Result<OrderRespons> temp=(Result<OrderRespons>)result;
+                Result<OrderRespons> temp=(Result<OrderRespons>)result;
+
                 if(temp.status.equals("200")){
-                   getView().showResult(temp.content.getData());
+                    getView().showResult(temp.content.getData());
                 }else{
                     getView().showResultOnErr(temp.message);
 

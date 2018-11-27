@@ -2,11 +2,17 @@ package com.finance.ymt.sgr.finance.model;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 import com.finance.ymt.sgr.finance.config.AppCon;
 import com.finance.ymt.sgr.finance.http.HttpService;
 import com.finance.ymt.sgr.finance.http.HttpUtils;
+import com.finance.ymt.sgr.finance.model.BaseModel;
+import com.finance.ymt.sgr.finance.model.RequestOrder;
+import com.finance.ymt.sgr.finance.model.User;
 import com.google.gson.Gson;
+
+
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -23,10 +29,12 @@ public class CommonModel extends BaseModel {
 
     String token;
     SharedPreferences pref ;
+    int shopId;;
     public CommonModel(Context context) {
         super(context);
         pref = context.getSharedPreferences(AppCon.USER_KEY,MODE_PRIVATE);
         token= pref.getString(AppCon.SCCESS_TOKEN_KEY,"");
+        shopId=pref.getInt(AppCon.USER_SHOP_ID,0);
     }
 
     /**
@@ -34,12 +42,16 @@ public class CommonModel extends BaseModel {
      *
      * @param onLceHttpResultListener
      */
-    public void getSave(final HttpUtils.OnHttpResultListener onLceHttpResultListener) {
+    public void getSave(int  status,int page, final HttpUtils.OnHttpResultListener onLceHttpResultListener){
 
         RequestOrder order=new RequestOrder();
-        order.setStatus(1);
+        order.setPageSize(10);
+        order.setCurrPage(page);
+        order.setStatus(status);
+        order.setShopId(shopId);
         Gson gson=new Gson();
         String obj=gson.toJson(order);
+        System.out.println("请求参数"+obj);
         RequestBody body= RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),obj);
         HttpService essenceService= buildService(HttpService.class);
         buildObserve((Observable)essenceService.getSave(token,body),onLceHttpResultListener);
@@ -54,6 +66,7 @@ public class CommonModel extends BaseModel {
     public void getLogin(User info, final HttpUtils.OnHttpResultListener onLceHttpResultListener) {
         Gson gson=new Gson();
         String obj=gson.toJson(info);
+        System.out.println("登录"+obj);
         RequestBody body= RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),obj);
         HttpService essenceService= buildService(HttpService.class);
         buildObserve((Observable)essenceService.getLogin(body),onLceHttpResultListener);
@@ -65,19 +78,13 @@ public class CommonModel extends BaseModel {
      *
      * @param onLceHttpResultListener
      */
-    public void getOrderList(int  status,int page,String address,String phone, final HttpUtils.OnHttpResultListener onLceHttpResultListener) {
-       RequestOrder order=new RequestOrder();
+    public void getOrderList(int  status,int page,int type, final HttpUtils.OnHttpResultListener onLceHttpResultListener) {
+        RequestOrder order=new RequestOrder();
         order.setPageSize(10);
         order.setCurrPage(page);
         order.setStatus(status);
-        if(phone!=null&&!phone.equals("")){
-            order.setPhone(phone);
-        }
-
-        if(address!=null&&!address.equals("")){
-            order.setAddress(address);
-        }
-//        order.setStatus(status);
+        order.setType(type);
+        order.setShopId(shopId);
         Gson gson=new Gson();
         String obj=gson.toJson(order);
         System.out.println("请求参数"+obj);

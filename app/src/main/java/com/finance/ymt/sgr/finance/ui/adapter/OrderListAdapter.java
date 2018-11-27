@@ -31,6 +31,7 @@ public class OrderListAdapter extends BaseQuickAdapter<OrderBean,BaseViewHolder>
 
     @Override
     protected void convert(BaseViewHolder baseViewHolder, OrderBean personItem) {
+        baseViewHolder.setText(R.id.order_list_num,personItem.getTodaySeq()+" ");
         baseViewHolder.setText(R.id.order_list_name,personItem.getUsername());
         baseViewHolder.setText(R.id.order_list_phone,personItem.getPhone());
         baseViewHolder.setText(R.id.order_list_address,personItem.getAddress());
@@ -38,15 +39,13 @@ public class OrderListAdapter extends BaseQuickAdapter<OrderBean,BaseViewHolder>
         baseViewHolder.setText(R.id.order_list_song,"配送："+personItem.getExpressFee());
         baseViewHolder.setText(R.id.order_list_can,"  餐费"+personItem.getAmount());
         baseViewHolder.setText(R.id.order_list_total,"  合计"+personItem.getTotal());
-        baseViewHolder.setText(R.id.order_list_zt, OrderStatus.getStatusName(personItem.getStatus()));
+        baseViewHolder.setText(R.id.order_list_zt, OrderStatus.getStatusName(personItem.getType(),personItem.getStatus()));
         if(personItem.getSummary()!=null&&!personItem.getSummary().equals("")){
             baseViewHolder.getView(R.id.order_list_bz).setVisibility(View.VISIBLE);
             baseViewHolder.setText(R.id.order_list_bz,"备注："+personItem.getSummary());
         }else{
             baseViewHolder.getView(R.id.order_list_bz).setVisibility(View.GONE);
         }
-
-
         try {
             baseViewHolder.setText(R.id.order_list_time,"下单："+OrderStatus.TimeFormat(personItem.getGmtCreate()));
             baseViewHolder.setText(R.id.order_send_time,"送达："+OrderStatus.TimeFormat(personItem.getSendTime()));
@@ -65,9 +64,6 @@ public class OrderListAdapter extends BaseQuickAdapter<OrderBean,BaseViewHolder>
 
 
     }
-
-
-
 
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {

@@ -1,8 +1,9 @@
 package com.finance.ymt.sgr.finance.ui;
 
+
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +18,7 @@ import com.finance.ymt.sgr.finance.model.Result;
 import com.finance.ymt.sgr.finance.model.User;
 import com.finance.ymt.sgr.finance.ui.order.OrderActivity;
 import com.finance.ymt.sgr.finance.util.StartActivityUtil;
+import com.finance.ymt.sgr.finance.util.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,17 +74,28 @@ public class LoginActivity extends AppCompatActivity {
                     commonModel.getLogin(user, new HttpUtils.OnHttpResultListener() {
                         @Override
                         public void onResult(Object result) {
-                           Result<String> temp=(Result<String>)result;
-                           if(temp.status.equals("200")){
-                               editor.putString(AppCon.SCCESS_TOKEN_KEY,temp.content);
-                               editor.putString(AppCon.USER_NAME,login_ed_usename.getText().toString());
-                               editor.putString(AppCon.USER_PWD,login_ed_password.getText().toString());
-                               editor.commit();
-                               StartActivityUtil.skipAnotherActivity(LoginActivity.this,OrderActivity.class);
-                               finish();
-                           }else{
-                               Toast.makeText(LoginActivity.this,temp.message,Toast.LENGTH_SHORT).show();
-                           }
+                            Result<User> temp=(Result<User>)result;
+
+                            if(temp.status.equals("200")){
+                                if(!temp.content.getEnabled().equals("1")){
+                                    ToastUtils.showLong("该账户已被停用");
+                                }else if(temp.content.getRole().equals("98")){
+                                    ToastUtils.showLong("请用客服账号登录");
+                                }else{
+                                    editor.putString(AppCon.SCCESS_TOKEN_KEY,temp.content.getToken());
+                                    editor.putString(AppCon.USER_NAME,login_ed_usename.getText().toString());
+                                    editor.putString(AppCon.USER_PWD,login_ed_password.getText().toString());
+                                    editor.putInt(AppCon.USER_SHOP_ID,Integer.parseInt(temp.content.getShopId()));
+                                    editor.putString(AppCon.USER_USER_ID,temp.content.getSellerId());
+                                    editor.commit();
+                                    StartActivityUtil.skipAnotherActivity(LoginActivity.this,OrderActivity.class);
+                                    finish();
+                                }
+
+
+                            }else{
+                                Toast.makeText(LoginActivity.this,temp.message,Toast.LENGTH_SHORT).show();
+                            }
                         }
 
                         @Override

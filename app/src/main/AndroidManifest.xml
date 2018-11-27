@@ -3,6 +3,9 @@
     package="com.finance.ymt.sgr.finance">
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <application
         android:name=".config.MyApplication"
         android:allowBackup="true"
@@ -17,6 +20,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name="com.zhangke.websocket.WebSocketService"/>
+        <receiver android:name="com.zhangke.websocket.NetworkChangedReceiver"/>
         <activity android:name=".ui.order.OrderActivity"></activity>
     </application>
 
