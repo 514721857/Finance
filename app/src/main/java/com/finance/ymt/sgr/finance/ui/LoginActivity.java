@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                             if(temp.status.equals("200")){
                                 if(!temp.content.getEnabled().equals("1")){
                                     ToastUtils.showLong("该账户已被停用");
-                                }else if(temp.content.getRole().equals("98")){
+                                }else if(!temp.content.getRole().equals("98")){
                                     ToastUtils.showLong("请用客服账号登录");
                                 }else{
                                     editor.putString(AppCon.SCCESS_TOKEN_KEY,temp.content.getToken());

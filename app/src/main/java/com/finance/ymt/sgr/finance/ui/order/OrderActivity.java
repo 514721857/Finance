@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.IBinder;
 import android.support.v4.content.ContextCompat;
@@ -46,6 +47,7 @@ import com.finance.ymt.sgr.finance.ui.LoginActivity;
 import com.finance.ymt.sgr.finance.ui.adapter.OrderListAdapter;
 import com.finance.ymt.sgr.finance.ui.order.OrderPresenter;
 import com.finance.ymt.sgr.finance.ui.order.OrderView;
+import com.finance.ymt.sgr.finance.util.SoundPoolPlayer;
 import com.finance.ymt.sgr.finance.util.StartActivityUtil;
 import com.finance.ymt.sgr.finance.util.ToastUtils;
 import com.finance.ymt.sgr.finance.view.MyDialog;
@@ -215,7 +217,7 @@ public class OrderActivity extends MvpWebSocketActivity<OrderView,OrderPresenter
     private LinearLayout ll1;
     Button btn_scan;
     AlertDialog dialog;
-
+    SoundPoolPlayer mPlayer;
 
 
     @Override
@@ -227,9 +229,13 @@ public class OrderActivity extends MvpWebSocketActivity<OrderView,OrderPresenter
             R.id.layout_wm_ywc,R.id.layout_wm_yqx})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.top_view_left://待付款 自取
+               showMusicTip();
+                break;
+
             case R.id.order_btn_wm://外卖
 
-                zq_badge_but.setBadgeText("");
+//                zq_badge_but.setBadgeText("");
 //                zq_badge_text.hide(true);
 //                zq_badge_text.hide(true);
                 type=1;
@@ -408,7 +414,15 @@ public class OrderActivity extends MvpWebSocketActivity<OrderView,OrderPresenter
 
         pref = this.getSharedPreferences(AppCon.USER_KEY,MODE_PRIVATE);
         userID= pref.getString(AppCon.USER_USER_ID,"");
-
+        mPlayer = SoundPoolPlayer.create(this, R.raw.newtip);
+        mPlayer.setOnCompletionListener(
+                new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) { 	//mp will be null here
+                        Log.d("debug", "completed");
+                    }
+                }
+        );
 
         setMoren();
         initMenu();
@@ -447,7 +461,7 @@ public class OrderActivity extends MvpWebSocketActivity<OrderView,OrderPresenter
 
     private void refresh() {
         if(type==0&&status==0){//自取的提醒点要取消
-            wm_badeg_but.hide(true);
+            zq_badge_but.hide(true);
         }
         if(type==1&&status==0){
             wm_badeg_but.hide(true);
@@ -542,6 +556,17 @@ public class OrderActivity extends MvpWebSocketActivity<OrderView,OrderPresenter
                         if(temp1.getStatus()==0){
                             temp1.setStatus(1);
                             getPresenter().UpdateOrder(temp1,position);
+
+
+                         /*   if(gson==null){
+                                gson=new Gson();
+                            }
+                            GsonTip tip=new GsonTip();
+                            tip.setOrderId(temp1.getOrderId());
+                            tip.setShopId(temp1.getShopId());
+                            tip.setStatus(temp1.getStatus());
+                            tip.setType(temp1.getType());
+                            OrderActivity.this.sendText(gson.toJson(tip));//推送给厨房*/
                         }else{
                             Toast.makeText(OrderActivity.this,"不可修改",Toast.LENGTH_LONG).show();
                         }
@@ -638,6 +663,9 @@ public class OrderActivity extends MvpWebSocketActivity<OrderView,OrderPresenter
     }
 
     private void showMusicTip() {
+              if(!mPlayer.isPlaying()){
+                    mPlayer.play();
+                }
     }
 
     @Override
