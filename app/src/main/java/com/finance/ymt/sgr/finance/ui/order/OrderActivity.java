@@ -39,6 +39,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter.OnItemChildClickListener;
 import com.finance.ymt.sgr.finance.R;
 import com.finance.ymt.sgr.finance.config.AppCon;
 import com.finance.ymt.sgr.finance.config.MvpWebSocketActivity;
+import com.finance.ymt.sgr.finance.model.GsonTip;
 import com.finance.ymt.sgr.finance.model.OrderBean;
 import com.finance.ymt.sgr.finance.model.oneArea;
 import com.finance.ymt.sgr.finance.ui.LoginActivity;
@@ -163,7 +164,7 @@ public class OrderActivity extends MvpWebSocketActivity<OrderView,OrderPresenter
     Badge zq_badge_but,wm_badeg_but;
 
     private  boolean isWm,isZq;
-
+    Gson gson;
 
     //设置默认
     private void setMoren(){
@@ -445,6 +446,15 @@ public class OrderActivity extends MvpWebSocketActivity<OrderView,OrderPresenter
     }
 
     private void refresh() {
+        if(type==0&&status==0){//自取的提醒点要取消
+            wm_badeg_but.hide(true);
+        }
+        if(type==1&&status==0){
+            wm_badeg_but.hide(true);
+        }
+
+//        wm_badeg_but
+
         mNextRequestPage = 0;
         mAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
         getPresenter().getOrderList(status,mNextRequestPage,type);
@@ -599,9 +609,35 @@ public class OrderActivity extends MvpWebSocketActivity<OrderView,OrderPresenter
 
     @Override
     public void onMessageResponse(Response message) {
-        ToastUtils.showLong("新订单提醒");
         System.out.println("新消息提示"+message.getResponseText());
+        if(gson==null){
+            gson=new Gson();
+        }
+        if(message.getResponseText().contains("clientMsg")){//app端推送的东西
 
+        }else{//服务器推送的东西
+            GsonTip   newTip= gson.fromJson( message.getResponseText() , GsonTip.class ) ;
+            if(newTip.getStatus()==0) {//新订单提醒
+                
+                showMusicTip();
+                ToastUtils.showLong("新订单");
+                if(newTip.getType()==1){//外卖提醒
+                    wm_badeg_but.setBadgeText("");
+                }else{//自取提醒
+                    zq_badge_but.setBadgeText("");
+                }
+
+              }
+
+
+
+        }
+
+//        {"orderId":"de6957257c9546eebb08a2beb9f0550a","type":0,"shopId":1}
+
+    }
+
+    private void showMusicTip() {
     }
 
     @Override
