@@ -414,7 +414,7 @@ public class OrderActivity extends MvpWebSocketActivity<OrderView,OrderPresenter
 
         pref = this.getSharedPreferences(AppCon.USER_KEY,MODE_PRIVATE);
         userID= pref.getString(AppCon.USER_USER_ID,"");
-        mPlayer = SoundPoolPlayer.create(this, R.raw.newtip);
+        mPlayer = SoundPoolPlayer.create(this, R.raw.threeo);
         mPlayer.setOnCompletionListener(
                 new MediaPlayer.OnCompletionListener() {
                     @Override
