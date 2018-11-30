@@ -2,11 +2,13 @@ package com.finance.ymt.sgr.finance.config;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
 import com.finance.ymt.sgr.finance.http.webSocket.AppResponseDispatcher;
+import com.zhangke.websocket.WebSocketService;
 import com.zhangke.websocket.WebSocketSetting;
 
 
@@ -27,6 +29,8 @@ public class MyApplication extends Application {
         WebSocketSetting.setConnectUrl("ws://scauymt.com/sell/websocket/seller/new-order");//必选
         WebSocketSetting.setResponseProcessDelivery(new AppResponseDispatcher());
         WebSocketSetting.setReconnectWithNetworkChanged(true);
+        //启动 WebSocket 服务
+        startService(new Intent(this, WebSocketService.class));
     }
 
     @Override
