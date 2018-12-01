@@ -106,6 +106,7 @@ public class OrderActivity extends MvpWebSocketActivity<OrderView,OrderPresenter
 
 
 
+
     @BindView(R.id.order_text_dfk)
     TextView order_text_dfk;
 
@@ -230,7 +231,9 @@ public class OrderActivity extends MvpWebSocketActivity<OrderView,OrderPresenter
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.top_view_left://待付款 自取
-               showMusicTip();
+//                top_view_left.setText("重连中...");
+                this.reconnect();
+//               showMusicTip();
                 break;
 
             case R.id.order_btn_wm://外卖
@@ -516,7 +519,7 @@ public class OrderActivity extends MvpWebSocketActivity<OrderView,OrderPresenter
         if(result!=null){
             System.out.println("显示数据"+result.size());
         }else{
-            System.out.println("没有数据");
+            ToastUtils.showLong("没有数据");
         }
 
         if(mNextRequestPage==0){
@@ -639,7 +642,7 @@ public class OrderActivity extends MvpWebSocketActivity<OrderView,OrderPresenter
             gson=new Gson();
         }
         if(message.getResponseText().contains("clientMsg")){//app端推送的东西
-
+            showMusicTip();
         }else{//服务器推送的东西
             GsonTip   newTip= gson.fromJson( message.getResponseText() , GsonTip.class ) ;
             if(newTip.getStatus()==0) {//新订单提醒
@@ -671,5 +674,35 @@ public class OrderActivity extends MvpWebSocketActivity<OrderView,OrderPresenter
     @Override
     public void onSendMessageError(ErrorResponse error) {
         System.out.println("新消息错误"+error.getResponseText());
+    }
+
+    @Override
+    public void reconnect() {
+        super.reconnect();
+        top_view_left.setText("重连中...");
+    }
+
+    @Override
+    public void onServiceBindSuccess() {
+        super.onServiceBindSuccess();
+        top_view_left.setText("连接成功");
+    }
+
+    @Override
+    public void onConnected() {
+        super.onConnected();
+        top_view_left.setText("已连接");
+    }
+
+    @Override
+    public void onConnectError(Throwable cause) {
+        super.onConnectError(cause);
+        top_view_left.setText("连接错误");
+    }
+
+    @Override
+    public void onDisconnected() {
+        super.onDisconnected();
+        top_view_left.setText("断开连接");
     }
 }

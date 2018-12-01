@@ -48,7 +48,7 @@ public class CommonModel extends BaseModel {
         order.setPageSize(10);
         order.setCurrPage(page);
         order.setStatus(status);
-        order.setShopId(shopId);
+//        order.setShopId(shopId);
         Gson gson=new Gson();
         String obj=gson.toJson(order);
         System.out.println("请求参数"+obj);
@@ -84,7 +84,7 @@ public class CommonModel extends BaseModel {
         order.setCurrPage(page);
         order.setStatus(status);
         order.setType(type);
-        order.setShopId(shopId);
+//        order.setShopId(shopId);
         Gson gson=new Gson();
         String obj=gson.toJson(order);
         System.out.println("请求参数"+obj);

@@ -10,7 +10,7 @@ public class RequestOrder {
     int currPage;
     int pageSize;
     String address;
-    int shopId;
+
     int type;
 
 
@@ -20,14 +20,6 @@ public class RequestOrder {
 
     public void setType(int type) {
         this.type = type;
-    }
-
-    public int getShopId() {
-        return shopId;
-    }
-
-    public void setShopId(int shopId) {
-        this.shopId = shopId;
     }
 
     public int getCurrPage() {

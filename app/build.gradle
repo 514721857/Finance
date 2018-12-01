@@ -8,8 +8,8 @@ android {
         applicationId "com.finance.ymt.sgr.finance"
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode
-        versionName "2.01"
+        versionCode 5
+        versionName "2.02"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

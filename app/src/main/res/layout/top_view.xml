@@ -8,7 +8,7 @@
 
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
-            android:text="声音测试"
+            android:text="已连接"
             android:id="@+id/top_view_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
