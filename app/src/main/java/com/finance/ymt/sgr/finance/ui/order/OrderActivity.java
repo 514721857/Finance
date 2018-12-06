@@ -606,7 +606,7 @@ public class OrderActivity extends MvpWebSocketActivity<OrderView,OrderPresenter
 
                         OrderBean temp1=  (OrderBean) adapter.getData().get(position);
                         if(temp1.getStatus()!=-1){
-                            temp1.setStatus(1);
+                            temp1.setStatus(-1);
                             getPresenter().UpdateOrder(temp1,position);
                         }else{
                             Toast.makeText(OrderActivity.this,"订单已取消",Toast.LENGTH_LONG).show();

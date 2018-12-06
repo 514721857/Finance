@@ -119,7 +119,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:visibility="gone"
+
             android:gravity="center"
             android:layout_gravity="center"
             android:id="@+id/layout_wm_ywc"
